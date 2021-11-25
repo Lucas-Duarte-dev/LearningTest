@@ -95,6 +95,20 @@ describe('Cart', () => {
       expect(cart.getTotal().getAmount()).toBeGreaterThan(0); // Espero que seja maior que (0);
     });
 
+    it('Should include formatted amount in the summary', () => {
+      cart.add({
+        product,
+        quantity: 5,
+      });
+
+      cart.add({
+        product: product2,
+        quantity: 3,
+      });
+
+      expect(cart.summary().formatted).toEqual('R$3,025.56');
+    });
+
     it('Should reset the cart when checkout() is called', () => {
       cart.add({
         product,
@@ -137,6 +151,47 @@ describe('Cart', () => {
       expect(cart.getTotal().getAmount()).toEqual(70776)
     });
 
+    it('Should apply quantity discount for odd quantities', () => {
+      const condition = {
+        quantity: 2,
+      };
+
+      cart.add({
+        product,
+        condition,
+        quantity: 5
+      });
+
+      expect(cart.getTotal().getAmount()).toEqual(106164);
+    });
+
+    it('Should NOT apply percentage discount quantity is below or equals minimum', () => {
+      const condition = {
+        percentage: 30,
+        minimum: 2,
+      };
+      cart.add({
+        product,
+        condition,
+        quantity: 2
+      });
+
+      expect(cart.getTotal().getAmount()).toEqual(70776);
+    });
+
+    it('Should NOT apply percentage discount for even quantities when condition is not met', () => {
+      const condition = {
+        quantity: 2,
+      };
+      cart.add({
+        product,
+        condition,
+        quantity: 1
+      });
+
+      expect(cart.getTotal().getAmount()).toEqual(35388);
+    });
+
     it('Should receive two or more conditions and determine/apply the best condition. First Case', () => {
       const condition1 = {
         percentage: 30,
@@ -154,6 +209,25 @@ describe('Cart', () => {
       });
 
       expect(cart.getTotal().getAmount()).toEqual(106164);
+    });
+
+    it('Should receive two or more conditions and determine/apply the best condition. Second Case', () => {
+      const condition1 = {
+        percentage: 80,
+        minimum: 2,
+      };
+
+      const condition2 = {
+        quantity: 2,
+      };
+
+      cart.add({
+        product,
+        condition: [condition1, condition2],
+        quantity: 5
+      });
+
+      expect(cart.getTotal().getAmount()).toEqual(35388);
     });
   });
 });
