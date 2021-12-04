@@ -1,0 +1,36 @@
+.search_container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search_contain {
+  max-width: 30rem;
+  width: 100%;
+  position: relative;
+  height: fit-content;
+
+  > label {
+    position: absolute;
+    top: 55%;
+    left: 0;
+    transform: translate(40%, -50%);
+
+    > svg {
+      height: 20px;
+      width: 20px;
+      fill: #b9b9b9;
+    }
+  }
+}
+
+.search {
+  width: 100%;
+  height: 2rem;
+  border: 1px solid #858585;
+  border-radius: 0.4rem;
+  padding-left: calc(20px + 1rem);
+  color: #ffffff;
+  font-size: 1rem;
+}
