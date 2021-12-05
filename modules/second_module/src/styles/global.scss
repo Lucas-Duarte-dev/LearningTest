@@ -12,8 +12,18 @@ a {
   text-decoration: none;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  background: none;
+  color: #f5f5f5;
+}
+
+button {
+  cursor: pointer;
+}
+
 .main_wrapper {
   width: 100%;
+  position: relative;
 }
 
 .main_container {
@@ -84,9 +94,9 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #222222;
 
     > h2, span {
+      color: #222222;
       background: none;
     }
   }
