@@ -1,7 +1,8 @@
 import '../styles/global.scss'
 import type { AppProps } from 'next/app'
-import { Search } from '../components/search';
+import { Search } from '../components/Search';
 import { MdFmdGood, MdShoppingCart } from 'react-icons/md';
+import { Cart } from '../components/Cart';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <span>About</span>
           </nav>
         </header>
+        <Cart />
         <Component {...pageProps} />
       </main>
       <footer className="footer_container">
