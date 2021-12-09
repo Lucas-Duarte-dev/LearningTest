@@ -7,14 +7,23 @@
 - Improper Instantiation
 - High Coupling
 - Test Code in Production
+- Duplicate Code
+- Shotgun Surgery
 
 # Design Patterns/Principles/Conventional
 
 - You Ain`t Gone Need It (YAGNI)
 - Single Responsibility (SRP)
 - Liskov Substitution (LSP)
-- Dependency Invertion (DIP)
+- Dependency Inversion (DIP)
 - Repository Pattern 
-- Test Double (MOCK)
+- Test Double (MOCK, SPY, STUB)
 - Arrange, Act, Assert (AAA)
 - Dependency Injection (DI)
+- System Under Test (SUT)
+- Strategy Pattern
+
+
+SPY Preocupado com o output
+MOCK preocupado com o Input
+STUB preocupado com ambos
