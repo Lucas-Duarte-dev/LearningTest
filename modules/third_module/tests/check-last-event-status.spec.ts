@@ -1,17 +1,21 @@
 import {set, reset} from 'mockdate';
 
+type EventStatus = {
+  status: string
+}
+
 class CheckLastEventStatus {
   constructor(private loadLastEventRepository: ILoadLastEventRepository) {
   }
 
-  async perform({ groupId }: { groupId: string }): Promise<string> {
+  async perform({ groupId }: { groupId: string }): Promise<EventStatus> {
     const event = await this.loadLastEventRepository.loadLastEvent({ groupId });
 
-    if(event === undefined) return 'done';
+    if(event === undefined) return { status: 'done' };
 
     const now = new Date();
 
-     return event.endDate > now ? 'active' : 'inReview';
+     return event.endDate > now ? { status: 'active' } : { status: 'inReview' };
   }
 }
 
@@ -70,7 +74,7 @@ describe('CheckLastEventStatus', () => {
 
     loadLastEventRepository.output = undefined;
 
-    const status = await sut.perform({ groupId });
+    const { status } = await sut.perform({ groupId });
 
     expect(status).toEqual('done');
   });
@@ -82,7 +86,7 @@ describe('CheckLastEventStatus', () => {
       endDate: new Date(new Date().getTime() + 1),
     };
 
-    const status = await sut.perform({ groupId });
+    const { status } = await sut.perform({ groupId });
 
     expect(status).toEqual('active');
   });
@@ -94,7 +98,7 @@ describe('CheckLastEventStatus', () => {
       endDate: new Date(new Date().getTime() - 1),
     };
 
-    const status = await sut.perform({ groupId });
+    const { status } = await sut.perform({ groupId });
 
     expect(status).toEqual('inReview');
   });
