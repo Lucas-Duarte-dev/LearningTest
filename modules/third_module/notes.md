@@ -9,6 +9,7 @@
 - Test Code in Production
 - Duplicate Code
 - Shotgun Surgery
+- Long Parameter List
 
 # Design Patterns/Principles/Conventional
 
@@ -22,6 +23,7 @@
 - Dependency Injection (DI)
 - System Under Test (SUT)
 - Strategy Pattern
+- Factory Pattern
 
 
 SPY Preocupado com o output
