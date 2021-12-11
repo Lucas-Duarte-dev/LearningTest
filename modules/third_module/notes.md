@@ -11,6 +11,7 @@
 - Shotgun Surgery
 - Long Parameter List
 - Primitive Obsession
+- Variable bad name
 
 # Design Patterns/Principles/Conventional
 
