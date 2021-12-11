@@ -15,7 +15,13 @@ class CheckLastEventStatus {
 
     const now = new Date();
 
-     return event.endDate >= now ? { status: 'active' } : { status: 'inReview' };
+     if (event.endDate >= now) return { status: 'active' };
+
+     const reviewDurationInMs = event.reviewDurationInHours * 60 * 60 * 1000;
+
+     const reviewDate = new Date(event.endDate.getTime() + reviewDurationInMs);
+
+     return reviewDate >= now ? { status: 'inReview' } : { status: 'done' };
   }
 }
 
@@ -56,6 +62,16 @@ class LoadLastEventRepositorySpy implements ILoadLastEventRepository{
 
     this.output = {
       endDate: new Date(new Date().getTime() - reviewDurationInMs + 1),
+      reviewDurationInHours
+    };
+  }
+
+  setEndDateAfterReviewDate(): void {
+    const reviewDurationInHours = 1;
+    const reviewDurationInMs = reviewDurationInHours * 60 * 60  * 1000;
+
+    this.output = {
+      endDate: new Date(new Date().getTime() - reviewDurationInMs - 1),
       reviewDurationInHours
     };
   }
@@ -140,7 +156,7 @@ describe('CheckLastEventStatus', () => {
     expect(status).toEqual('active');
   });
 
-  it('should return status active when now is after event end time', async () => {
+  it('should return status inReview when now is after event end time', async () => {
 
 
     const { sut, loadLastEventRepository } = makeSut()
@@ -152,9 +168,7 @@ describe('CheckLastEventStatus', () => {
     expect(status).toEqual('inReview');
   });
 
-  it('should return status active when now is equal to review time', async () => {
-
-
+  it('should return status inReview when now is equal to review time', async () => {
     const { sut, loadLastEventRepository } = makeSut()
 
     loadLastEventRepository.setEndDateBeforeReviewDate();
@@ -163,4 +177,14 @@ describe('CheckLastEventStatus', () => {
 
     expect(status).toEqual('inReview');
   });
-})
+
+  it('should return status done when now is after review time', async () => {
+    const { sut, loadLastEventRepository } = makeSut()
+
+    loadLastEventRepository.setEndDateAfterReviewDate();
+
+    const { status } = await sut.perform({ groupId });
+
+    expect(status).toEqual('done');
+  });
+});
