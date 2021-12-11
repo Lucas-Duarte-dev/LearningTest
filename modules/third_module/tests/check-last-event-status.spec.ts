@@ -151,4 +151,16 @@ describe('CheckLastEventStatus', () => {
 
     expect(status).toEqual('inReview');
   });
+
+  it('should return status active when now is equal to review time', async () => {
+
+
+    const { sut, loadLastEventRepository } = makeSut()
+
+    loadLastEventRepository.setEndDateBeforeReviewDate();
+
+    const { status } = await sut.perform({ groupId });
+
+    expect(status).toEqual('inReview');
+  });
 })
